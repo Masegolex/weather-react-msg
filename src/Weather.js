@@ -123,7 +123,7 @@ export default function Weather() {
         </a>
         , and website hosted on Netlify{" "}
         <a
-          href="https://app.netlify.com/sites/sky-savvy-weather-app/overview"
+          href="https://moonlit-wisp-4ac155.netlify.app/"
           target="_blank"
           rel="noopener noreferrer"
         >
