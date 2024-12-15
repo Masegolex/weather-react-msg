@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Audio } from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 export default function Weather(props) {
   function handleResponse(response) {
@@ -13,14 +13,14 @@ export default function Weather(props) {
 
   axios.get(apiUrl).then(handleResponse);
   return (
-    <Audio
+    <Puff
+      visible={true}
       height="80"
       width="80"
-      radius="9"
-      color="green"
-      ariaLabel="loading"
-      wrapperStyle
-      wrapperClass
+      color="#00BFFF"
+      ariaLabel="puff-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
     />
   );
 }
