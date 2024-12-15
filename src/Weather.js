@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import "./Weather.css"; // Make sure to style this properly
+import "./Weather.css";
 
 export default function Weather({ city = "Cape Town" }) {
   const [weatherData, setWeatherData] = useState(null);
@@ -60,7 +60,7 @@ export default function Weather({ city = "Cape Town" }) {
 
   function handleSearchSubmit(event) {
     event.preventDefault();
-    setSearchCity(searchCity); // trigger the useEffect
+    setSearchCity(searchCity);
   }
 
   if (!weatherData) return <p>Loading...</p>;
@@ -68,7 +68,6 @@ export default function Weather({ city = "Cape Town" }) {
   return (
     <div className="WeatherApp">
       <div className="Weather-container">
-        {/* Header and Search Form inside the container */}
         <h1>Weather App</h1>
         <form onSubmit={handleSearchSubmit}>
           <input
@@ -106,7 +105,6 @@ export default function Weather({ city = "Cape Town" }) {
         </div>
       </div>
 
-      {/* Footer with links */}
       <footer className="App-footer">
         <p>
           This project was coded by <strong>Masego Ntuane</strong> and is
