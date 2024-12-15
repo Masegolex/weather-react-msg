@@ -108,17 +108,17 @@ export default function Weather({ city = "Cape Town" }) {
       <footer className="App-footer">
         <p>
           This project was coded by <strong>Masego Ntuane</strong> and is
-          open-sourced on{" "}
+          open-sourced on
           <a
-            href="https://github.com/your-github-repository"
+            href="https://github.com/Masegolex/weather-react-msg"
             target="_blank"
             rel="noopener noreferrer"
           >
             GitHub
-          </a>{" "}
+          </a>
           and hosted on{" "}
           <a
-            href="https://your-app-name.netlify.app"
+            href="https://app.netlify.com/sites/moonlit-wisp-4ac155/overview"
             target="_blank"
             rel="noopener noreferrer"
           >
