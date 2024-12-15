@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Weather.css";
 
@@ -7,34 +7,21 @@ export default function Weather({ city }) {
   const [forecast, setForecast] = useState([]);
   const apiKey = "2a2eaa51d996796495bf456e5b58adf4";
 
-  useEffect(() => {
-    if (city === "current") {
-      navigator.geolocation.getCurrentPosition((position) => {
-        fetchWeatherByCoordinates(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-      });
-    } else {
-      fetchWeatherByCity(city);
-    }
-  }, [city]);
-
-  function fetchWeatherByCity(city) {
+  const fetchWeatherByCity = useCallback((city) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(url).then(handleWeatherResponse);
 
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(forecastUrl).then(handleForecastResponse);
-  }
+  }, []);
 
-  function fetchWeatherByCoordinates(lat, lon) {
+  const fetchWeatherByCoordinates = useCallback((lat, lon) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     axios.get(url).then(handleWeatherResponse);
 
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     axios.get(forecastUrl).then(handleForecastResponse);
-  }
+  }, []);
 
   function handleWeatherResponse(response) {
     setWeatherData({
@@ -52,6 +39,19 @@ export default function Weather({ city }) {
     );
     setForecast(forecastData);
   }
+
+  useEffect(() => {
+    if (city === "current") {
+      navigator.geolocation.getCurrentPosition((position) => {
+        fetchWeatherByCoordinates(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+      });
+    } else {
+      fetchWeatherByCity(city);
+    }
+  }, [city, fetchWeatherByCity, fetchWeatherByCoordinates]);
 
   if (!weatherData) return <p>Loading...</p>;
 
