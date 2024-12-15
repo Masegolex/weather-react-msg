@@ -6,22 +6,35 @@ export default function Weather({ city = "Cape Town" }) {
   const [weatherData, setWeatherData] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [searchCity, setSearchCity] = useState(city);
-  const apiKey = "2a2eaa51d996796495bf456e5b58adf4";
+  const [error, setError] = useState(null); // To handle errors
+  const apiKey = "bd3bb6534458ba51b48c49f5155745b6";
 
   const fetchWeatherByCity = useCallback((city) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(url).then(handleWeatherResponse);
+    axios
+      .get(url)
+      .then(handleWeatherResponse)
+      .catch((err) => setError("City not found"));
 
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(forecastUrl).then(handleForecastResponse);
+    axios
+      .get(forecastUrl)
+      .then(handleForecastResponse)
+      .catch((err) => setError("Error fetching forecast"));
   }, []);
 
   const fetchWeatherByCoordinates = useCallback((lat, lon) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-    axios.get(url).then(handleWeatherResponse);
+    axios
+      .get(url)
+      .then(handleWeatherResponse)
+      .catch((err) => setError("Error fetching weather data"));
 
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-    axios.get(forecastUrl).then(handleForecastResponse);
+    axios
+      .get(forecastUrl)
+      .then(handleForecastResponse)
+      .catch((err) => setError("Error fetching forecast"));
   }, []);
 
   function handleWeatherResponse(response) {
@@ -60,9 +73,10 @@ export default function Weather({ city = "Cape Town" }) {
 
   function handleSearchSubmit(event) {
     event.preventDefault();
-    setSearchCity(searchCity);
+    fetchWeatherByCity(searchCity.trim());
   }
 
+  if (error) return <p>{error}</p>;
   if (!weatherData) return <p>Loading...</p>;
 
   return (
@@ -97,7 +111,7 @@ export default function Weather({ city = "Cape Town" }) {
               </p>
               <p>{Math.round(day.main.temp)}°C</p>
               <img
-                src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
                 alt={day.weather[0].description}
               />
             </div>
@@ -108,7 +122,7 @@ export default function Weather({ city = "Cape Town" }) {
       <footer className="App-footer">
         <p>
           This project was coded by <strong>Masego Ntuane</strong> and is
-          open-sourced on
+          open-sourced on{" "}
           <a
             href="https://github.com/Masegolex/weather-react-msg"
             target="_blank"
@@ -116,7 +130,7 @@ export default function Weather({ city = "Cape Town" }) {
           >
             GitHub
           </a>
-          and hosted on{" "}
+          and hosted on
           <a
             href="https://app.netlify.com/sites/moonlit-wisp-4ac155/overview"
             target="_blank"
